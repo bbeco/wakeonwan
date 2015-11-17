@@ -10,11 +10,13 @@ packets on the LAN segment. Wakeonlan can is available in the repository of
 the majority of Linux distribution.
 
 For example, on Debian and its derivates, it can be installed with:
+
 	sudo apt-get update
 	sudo apt-get install wakeonlan
 
 ##How to use this software
 Simply start the server with:
+
 	./server <mac-address> <listening-port>
 
 ##How it works
