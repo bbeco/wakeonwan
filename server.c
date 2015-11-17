@@ -20,6 +20,9 @@
 #define BACKLOG 10
 #define N_CHILDREN 5
 
+#define ND(format, ...) do {} while(0)
+#define D(format, ...) do { fprintf(stderr, format, ##__VA_ARGS__); }\
+	while (0)
 void
 usage(void)
 {
@@ -29,7 +32,7 @@ usage(void)
 int
 main(int argc, char *argv[])
 {
-	int ret;
+	int ret, val;
 	int pid;
 	int sock = 0, cl_sock, i;
 	socklen_t cl_addr_len;
@@ -49,6 +52,10 @@ main(int argc, char *argv[])
 		perror("E: socket()");
 		goto fail;
 	}
+
+	val = 1;
+	setsockopt(sock, SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+	setsockopt(sock, SOL_SOCKET, SO_REUSEPORT, &val, sizeof(val));
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
 	addr.sin_port = htons(port);
@@ -91,9 +98,7 @@ main(int argc, char *argv[])
 		cl_addr_len = sizeof(cl_addr);
 		memset(&cl_addr, 0, cl_addr_len);
 		cl_sock = accept(sock, (struct sockaddr *)&cl_addr, &cl_addr_len); 
-#ifdef DEBUG
-		printf("Accepting incoming connection\n");
-#endif
+		ND("Accepting incoming connection\n");
 		if (cl_sock < 0) {
 			perror("E: accept()");
 			goto fail;

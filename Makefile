@@ -1,8 +1,9 @@
-CFLAGS=-Wall -Werror -DDEBUG
+CFLAGS=-Wall -Werror 
+EXEC=server
 
 .PHONY=clean
 
-all: server
+all: $(EXEC)
 
 clean:
-	rm -fr *.o server
+	rm -fr *.o $(EXEC)
